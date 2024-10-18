@@ -1,18 +1,22 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function Stopwatch() {
   const [startTime, setStartTime] = useState(null);
   const [now, setNow] = useState(null);
+  const intervalRef = useRef(null);
 
   function handleStart() {
-    // 开始计时。
     setStartTime(Date.now());
     setNow(Date.now());
 
-    setInterval(() => {
-      // 每 10ms 更新一次当前时间。
+    clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
       setNow(Date.now());
     }, 10);
+  }
+
+  function handleStop() {
+    clearInterval(intervalRef.current);
   }
 
   let secondsPassed = 0;
@@ -24,6 +28,7 @@ export default function Stopwatch() {
     <>
       <h1>时间过去了： {secondsPassed.toFixed(3)}</h1>
       <button onClick={handleStart}>开始</button>
+      <button onClick={handleStop}>停止</button>
     </>
   );
 }
