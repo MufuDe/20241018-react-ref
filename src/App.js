@@ -1,12 +1,34 @@
-import { useRef } from "react";
+import { useState } from "react";
 
-export default function Counter() {
-  let countRef = useRef(0);
+export default function Chat() {
+  const [text, setText] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  let timeoutID = null;
 
-  function handleClick() {
-    // 这样并未重新渲染组件！
-    countRef.current = countRef.current + 1;
+  function handleSend() {
+    setIsSending(true);
+    timeoutID = setTimeout(() => {
+      alert("已发送！");
+      setIsSending(false);
+    }, 3000);
   }
 
-  return <button onClick={handleClick}>你点击了 {countRef.current} 次</button>;
+  function handleUndo() {
+    setIsSending(false);
+    clearTimeout(timeoutID);
+  }
+
+  return (
+    <>
+      <input
+        disabled={isSending}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <button disabled={isSending} onClick={handleSend}>
+        {isSending ? "发送中……" : "发送"}
+      </button>
+      {isSending && <button onClick={handleUndo}>撤销</button>}
+    </>
+  );
 }
