@@ -1,24 +1,16 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 
-export default function Chat() {
-  const [text, setText] = useState("");
-  const textRef = useRef(text);
+export default function Form() {
+  const inputRef = useRef(null);
 
-  function handleChange(e) {
-    setText(e.target.value);
-    textRef.current = e.target.value;
-  }
-
-  function handleSend() {
-    setTimeout(() => {
-      alert("正在发送：" + textRef.current);
-    }, 3000);
+  function handleClick() {
+    inputRef.current.focus();
   }
 
   return (
     <>
-      <input value={text} onChange={handleChange} />
-      <button onClick={handleSend}>发送</button>
+      <input ref={inputRef} />
+      <button onClick={handleClick}>聚焦输入框</button>
     </>
   );
 }
