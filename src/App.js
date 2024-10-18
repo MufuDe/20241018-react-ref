@@ -1,21 +1,21 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function Chat() {
   const [text, setText] = useState("");
   const [isSending, setIsSending] = useState(false);
-  let timeoutID = null;
+  const timeoutRef = useRef(null);
 
   function handleSend() {
     setIsSending(true);
-    timeoutID = setTimeout(() => {
-      alert("已发送！");
+    timeoutRef.current = setTimeout(() => {
+      alert("已发送!");
       setIsSending(false);
     }, 3000);
   }
 
   function handleUndo() {
     setIsSending(false);
-    clearTimeout(timeoutID);
+    clearTimeout(timeoutRef.current);
   }
 
   return (
